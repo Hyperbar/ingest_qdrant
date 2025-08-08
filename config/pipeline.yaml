@@ -1,0 +1,56 @@
+qdrant:
+  url: http://localhost:6333
+  api_key: null
+  prefer_grpc: true
+  timeout_sec: 30
+  replication_factor: 2
+  write_consistency_factor: 1
+
+collection:
+  name: default_collection
+  vectors:
+    size: 1024
+    distance: Cosine
+    hnsw_config:
+      m: 32
+      ef_construct: 256
+  optimizers_config:
+    deleted_threshold: 0.2
+    vacuum_min_vector_number: 1000
+    default_segment_number: 2
+  shards_number: 2
+
+embeddings:
+  model_name: BAAI/bge-large-en-v1.5
+  batch_size: 64
+  normalize_embeddings: true
+  device: auto
+  cache:
+    enabled: true
+    path: ./.cache/embeddings.sqlite
+
+chunking:
+  strategy: adaptive_hierarchical
+  target_tokens: 350
+  min_tokens: 120
+  max_tokens: 512
+  overlap_tokens: 40
+  tokenizer: cl100k_base
+
+metadata:
+  enable_language_detection: true
+  enable_spacy_ner: false
+  spacy_model: en_core_web_sm
+  keywords_top_k: 10
+
+pipeline:
+  processing_version: v1
+  batch_size_points: 256
+  max_concurrency: 4
+  near_duplicate_threshold: 0.98
+  upsert_timeout_sec: 60
+
+metrics:
+  enabled: true
+  host: 0.0.0.0
+  port: 8008
